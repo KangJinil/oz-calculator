@@ -40,10 +40,8 @@ const switchMode = (mode) => {
   
   currentMode = mode;
   
-  // 프로그래머 모드가 아닌 경우 디스플레이 초기화
-  if (mode !== 'programmer') {
-    clearDisplay();
-  }
+  // 모든 모드 전환 시 디스플레이 및 수식 초기화
+  clearDisplay();
   
   // 통화, 날짜, 단위 변환 모드에서는 계산 내역 숨기기
   const historyContainer = document.getElementById('history-container');
