@@ -21,14 +21,19 @@ const updateDisplay = () => {
   // 수식이 아닌 숫자만 있을 때 천 단위 쉼표 추가
   // 연산자나 괄호가 포함된 경우는 그대로 표시
   if (/^-?\d+\.?\d*$/.test(displayValue)) {
-    const num = parseFloat(displayValue);
-    if (!isNaN(num)) {
-      display.textContent = num.toLocaleString('ko-KR', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 10
-      });
-    } else {
+    // 마지막이 소수점으로 끝나는 경우 그대로 표시
+    if (displayValue.endsWith('.')) {
       display.textContent = displayValue;
+    } else {
+      const num = parseFloat(displayValue);
+      if (!isNaN(num)) {
+        display.textContent = num.toLocaleString('ko-KR', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 10
+        });
+      } else {
+        display.textContent = displayValue;
+      }
     }
   } else {
     // 수식인 경우 그대로 표시
