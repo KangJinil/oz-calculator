@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>\uacc4\uc0b0\uae30 \ud14c\uc2a4\ud2b8</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">\uacc4\uc0b0\uae30 \uae30\ub2a5 \ud14c\uc2a4\ud2b8</h1>
+    
+    <!-- \uacc4\uc0b0\uae30 UI (\uc228\uae40) -->
+    <div style="display: none;">
+      <div id="display">0</div>
+      <input id="start-date" type="date">
+      <input id="end-date" type="date">
+      <input id="days-to-add" type="number">
+      <select id="unit-type"></select>
+      <select id="from-unit"></select>
+      <select id="to-unit"></select>
+      <input id="from-value" type="number">
+      <input id="to-value" type="number" readonly>
+      <select id="from-currency"></select>
+      <select id="to-currency"></select>
+      <input id="currency-from-value" type="number">
+      <input id="currency-to-value" type="text" readonly>
+      <div id="result"></div>
+      <div id="history-container"><div id="history"></div></div>
+      <div id="error-modal" class="hidden"></div>
+      
+      <!-- \uac01 \uacc4\uc0b0\uae30 \ubaa8\ub4dc -->
+      <div id="standard-calc" class="tab-content active"></div>
+      <div id="scientific-calc" class="tab-content"></div>
+      <div id="programmer-calc" class="tab-content"></div>
+      <div id="date-calc" class="tab-content"></div>
+      <div id="converter-calc" class="tab-content"></div>
+      <div id="currency-calc" class="tab-content"></div>
+    </div>
+    
+    <!-- \ud14c\uc2a4\ud2b8 \uacb0\uacfc -->
+    <div id="test-results" class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-lg font-semibold mb-4">\ud14c\uc2a4\ud2b8 \uacb0\uacfc</h2>
+      <div id="results-container">
+        <p class="text-gray-500">\ud14c\uc2a4\ud2b8\ub97c \uc2e4\ud589\ud558\ub824\uba74 \ucf58\uc194\uc744 \ud655\uc778\ud558\uc138\uc694 (F12)</p>
+      </div>
+    </div>
+    
+    <!-- \ud14c\uc2a4\ud2b8 \ubc84\ud2bc -->
+    <button onclick="runManualTest()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      \uc218\ub3d9 \ud14c\uc2a4\ud2b8 \uc2e4\ud589
+    </button>
+  </div>
+  
+  <!-- \uacc4\uc0b0\uae30 \uc2a4\ud06c\ub9bd\ud2b8 -->
+  <script>
+    // \ud544\uc694\ud55c \uc804\uc5ed \ubcc0\uc218 \ucd08\uae30\ud654
+    let currentMode = 'standard';
+    let currentBase = 'dec';
+    let dropdownOpen = false;
+  </script>
+  <script src="calculator.js"></script>
+  <script src="advanced-calculator.js"></script>
+  <script src="test-calculator.js"></script>
+  
+  <script>
+    async function runManualTest() {
+      const container = document.getElementById('results-container');
+      container.innerHTML = '<p class="text-gray-500">\ud14c\uc2a4\ud2b8 \uc2e4\ud589 \uc911...</p>';
+      
+      const results = await runAllTests();
+      
+      const html = `
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-3 bg-gray-100 rounded">
+            <span class="font-medium">\ucd1d \ud14c\uc2a4\ud2b8</span>
+            <span class="font-bold">${testResults.length}</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-green-100 rounded">
+            <span class="font-medium text-green-800">\ud1b5\uacfc</span>
+            <span class="font-bold text-green-800">${results.passed}</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-red-100 rounded">
+            <span class="font-medium text-red-800">\uc2e4\ud328</span>
+            <span class="font-bold text-red-800">${results.failed}</span>
+          </div>
+        </div>
+        
+        <div class="mt-4 space-y-2">
+          ${testResults.map(r => `
+            <div class="p-2 border rounded flex items-center gap-2">
+              <span>${r.status}</span>
+              <span class="flex-1">${r.name}</span>
+              ${r.error ? `<span class="text-red-600 text-sm">${r.error}</span>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+      
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
