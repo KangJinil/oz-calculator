@@ -488,11 +488,7 @@ const fetchExchangeRates = async () => {
       return exchangeRates;
     }
     
-    // 로딩 표시
-    const resultElement = document.getElementById("result");
-    resultElement.classList.remove("hidden", "bg-red-100", "text-red-800", "bg-blue-100", "text-blue-800");
-    resultElement.classList.add("bg-yellow-100", "text-yellow-800", "border", "border-yellow-200");
-    resultElement.textContent = "환율 정보를 가져오는 중...";
+    // 통화 모드에서는 result element를 사용하지 않음
     
     // 무료 환율 API 사용 (exchangerate-api.com)
     const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -510,14 +506,7 @@ const fetchExchangeRates = async () => {
     
     ratesLastUpdated = Date.now();
     
-    // 성공 메시지
-    resultElement.classList.remove("bg-yellow-100", "text-yellow-800", "border-yellow-200");
-    resultElement.classList.add("bg-green-100", "text-green-800", "border", "border-green-200");
-    resultElement.textContent = `환율 정보 업데이트 완료 (${new Date().toLocaleTimeString()})`;
-    
-    setTimeout(() => {
-      resultElement.classList.add("hidden");
-    }, 2000);
+    // 통화 모드에서는 result element를 사용하지 않음
     
     return exchangeRates;
   } catch (error) {
@@ -558,27 +547,34 @@ const convertCurrency = async () => {
   const usdValue = fromValue / rates[fromCurrency];
   const result = usdValue * rates[toCurrency];
   
-  // 결과값에 천 단위 쉼표 추가
-  const formattedResult = result.toLocaleString('ko-KR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  // 결과값 포매팅 (소수점이 0이면 표시하지 않음)
+  let formattedResult;
+  if (result % 1 === 0) {
+    // 정수인 경우
+    formattedResult = result.toLocaleString('ko-KR');
+  } else {
+    // 소수인 경우 불필요한 0 제거
+    formattedResult = result.toLocaleString('ko-KR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 10
+    });
+  }
   
   document.getElementById('currency-to-value').value = formattedResult;
   
-  // 디스플레이와 결과 표시 (천 단위 쉼표 포함)
-  const formattedFromValue = fromValue.toLocaleString('ko-KR', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2
-  });
+  // 입력값 포매팅 (소수점이 0이면 표시하지 않음)
+  let formattedFromValue;
+  if (fromValue % 1 === 0) {
+    formattedFromValue = fromValue.toLocaleString('ko-KR');
+  } else {
+    formattedFromValue = fromValue.toLocaleString('ko-KR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 10
+    });
+  }
   
   displayValue = `${formattedFromValue} ${fromCurrency} = ${formattedResult} ${toCurrency}`;
   updateDisplay();
-  
-  const resultElement = document.getElementById("result");
-  resultElement.classList.remove("hidden", "bg-red-100", "text-red-800", "border-red-200");
-  resultElement.classList.add("bg-blue-100", "text-blue-800", "border", "border-blue-200");
-  resultElement.textContent = displayValue;
 };
 
 // 통화 선택 변경 시 중복 방지
