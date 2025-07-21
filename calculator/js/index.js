@@ -11,7 +11,7 @@ import {
 import { showError, removeError } from "./error.js";
 import saveHistory from "./history.js";
 
-let history = [];
+let history = []; // History for displaying records
 let currentInput = "";
 let firstNumber = null;
 let operator = null;
