@@ -1,14 +1,24 @@
-import './index.js';
+import {
+    appendNumber,
+    setOperator,
+    resetDisplay,
+    calculate,
+    displayHistory as showHistory,
+    VALID_NUMBERS,
+    VALID_OPERATORS,
+    currentInput,
+    history,
+} from "./index.js";
 
 const state = {
     currentInput: "",
     firstNumber: null,
     operator: null,
-    isError: false
+    isError: false,
 };
 
 window.appendNumber = async (number) => {
-    const module = await import('./index.js');
+    const module = await import("./index.js");
     if (state.isError) {
         module.removeError();
         module.resetDisplay();
@@ -23,7 +33,7 @@ window.appendNumber = async (number) => {
 };
 
 window.setOperator = async (op) => {
-    const module = await import('./index.js');
+    const module = await import("./index.js");
     if (state.isError) {
         module.removeError();
         module.resetDisplay();
@@ -44,7 +54,7 @@ window.setOperator = async (op) => {
 };
 
 window.calculate = async () => {
-    const module = await import('./index.js');
+    const module = await import("./index.js");
     if (state.isError) {
         module.removeError();
         module.resetDisplay();
@@ -54,9 +64,13 @@ window.calculate = async () => {
         state.isError = false;
         return;
     }
-    
+
     try {
-        if (state.firstNumber === null || state.operator === null || !state.currentInput) {
+        if (
+            state.firstNumber === null ||
+            state.operator === null ||
+            !state.currentInput
+        ) {
             state.isError = true;
             throw new Error("계산에 필요한 값이 부족합니다.");
         }
@@ -65,8 +79,18 @@ window.calculate = async () => {
             state.isError = true;
             throw new Error("유효한 숫자를 입력하세요.");
         }
-        const result = module.calculateOperation(state.firstNumber, secondNumber, state.operator);
-        module.saveHistory(state.firstNumber, state.operator, secondNumber, result, module.history);
+        const result = module.calculateOperation(
+            state.firstNumber,
+            secondNumber,
+            state.operator
+        );
+        module.saveHistory(
+            state.firstNumber,
+            state.operator,
+            secondNumber,
+            result,
+            module.history
+        );
         const resultElement = document.getElementById("result");
         resultElement.classList.remove("d-none", "alert-danger");
         resultElement.classList.add("alert-info");
@@ -82,7 +106,7 @@ window.calculate = async () => {
 };
 
 window.clearDisplay = async () => {
-    const module = await import('./index.js');
+    const module = await import("./index.js");
     module.removeError();
     module.resetDisplay();
     state.currentInput = "";
@@ -92,7 +116,7 @@ window.clearDisplay = async () => {
 };
 
 document.addEventListener("keydown", async (event) => {
-    const module = await import('./index.js');
+    const module = await import("./index.js");
     const key = event.key;
     if (module.VALID_NUMBERS.includes(key)) window.appendNumber(key);
     if (module.VALID_OPERATORS.includes(key)) window.setOperator(key);
@@ -104,3 +128,9 @@ document.addEventListener("keydown", async (event) => {
     }
     if (key === "Escape") window.clearDisplay();
 });
+
+window.displayHistory = () => {
+    const historyElement = document.getElementById("history");
+    historyElement.classList.remove("d-none");
+    historyElement.textContent = showHistory(history);
+};
