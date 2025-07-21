@@ -16,7 +16,13 @@
     <body>
         <div class="container calculator-container">
             <h1 class="text-center mb-4">계산기 서비스</h1>
-            <input type="text" id="display" class="form-control" value="0" readonly />
+            <input
+                type="text"
+                id="display"
+                class="form-control"
+                value="0"
+                readonly
+            />
             <div class="row g-2">
                 <!-- 숫자 버튼 -->
                 <div class="col-3">
@@ -148,6 +154,21 @@
                     </button>
                 </div>
             </div>
+            <div class="row g-2">
+                <div class="col-12">
+                    <button
+                        class="btn btn-info calc-btn w-100"
+                        onclick="displayHistory()"
+                    >
+                        기록 표시
+                    </button>
+                </div>
+            </div>
+            <div
+                id="history"
+                class="alert alert-secondary result-alert d-none"
+            ></div>
+
             <div id="result" class="alert alert-info result-alert d-none"></div>
         </div>
         <script
