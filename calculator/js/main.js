@@ -1,14 +1,4 @@
-import {
-    appendNumber,
-    setOperator,
-    resetDisplay,
-    calculate,
-    displayHistory as showHistory,
-    VALID_NUMBERS,
-    VALID_OPERATORS,
-    currentInput,
-    history,
-} from "./index.js";
+import "./index.js";
 
 const state = {
     currentInput: "",
@@ -129,8 +119,10 @@ document.addEventListener("keydown", async (event) => {
     if (key === "Escape") window.clearDisplay();
 });
 
-window.displayHistory = () => {
+window.displayHistory = async () => {
+    const module = await import("./index.js");
     const historyElement = document.getElementById("history");
     historyElement.classList.remove("d-none");
-    historyElement.textContent = showHistory(history);
+    historyElement.style.whiteSpace = "pre-line";
+    historyElement.textContent = module.displayHistory(module.history);
 };

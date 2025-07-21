@@ -12,9 +12,9 @@ export default function saveHistory(
 }
 
 export function displayHistory(history) {
-    let result = "계산 기록:\\n";
+    let result = "계산 기록:\n";
     for (const record of history) {
-        result += `${record.firstNumber} ${record.operator} ${record.secondNumber} = ${record.result}\\n`;
+        result += `${record.firstNumber} ${record.operator} ${record.secondNumber} = ${record.result}\n`;
     }
     return result || "기록이 없습니다.";
 }

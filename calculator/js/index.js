@@ -9,35 +9,15 @@ import {
     VALID_OPERATORS,
 } from "./input.js";
 import { showError, removeError } from "./error.js";
-import saveHistory from "./history.js";
+import saveHistory, { displayHistory } from "./history.js";
 
-let history = []; // Conflicted Completed
+let history = []; // History for exponent operations and displaying records
 let currentInput = "";
 let firstNumber = null;
 let operator = null;
 let isError = false;
 
-export {
-    calculateOperation,
-    resetDisplay,
-    setDisplay,
-    subDisplay,
-    appendNumber,
-    setOperator,
-    showError,
-    removeError,
-    saveHistory,
-    displayHistory,
-    VALID_NUMBERS,
-    VALID_OPERATORS,
-    history,
-    currentInput,
-    firstNumber,
-    operator,
-    isError,
-};
-
-export default function calculate() {
+function calculate() {
     try {
         if (firstNumber === null || operator === null || !currentInput) {
             isError = true;
@@ -62,3 +42,26 @@ export default function calculate() {
         showError(error.message);
     }
 }
+
+export {
+    calculateOperation,
+    resetDisplay,
+    setDisplay,
+    subDisplay,
+    appendNumber,
+    setOperator,
+    showError,
+    removeError,
+    saveHistory,
+    displayHistory,
+    VALID_NUMBERS,
+    VALID_OPERATORS,
+    history,
+    currentInput,
+    firstNumber,
+    operator,
+    isError,
+    calculate,
+};
+
+export default calculate;
