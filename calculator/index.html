@@ -16,7 +16,13 @@
     <body>
         <div class="container calculator-container">
             <h1 class="text-center mb-4">계산기 서비스</h1>
-            <input type="text" id="display" class="form-control" value="0" readonly />
+            <input
+                type="text"
+                id="display"
+                class="form-control"
+                value="0"
+                readonly
+            />
             <div class="row g-2">
                 <!-- 숫자 버튼 -->
                 <div class="col-3">
@@ -145,6 +151,14 @@
                         onclick="setOperator('+')"
                     >
                         +
+                    </button>
+                </div>
+                <div class="col-3">
+                    <button
+                        class="btn btn-warning calc-btn w-100"
+                        onclick="setOperator('^')"
+                    >
+                        ^
                     </button>
                 </div>
             </div>
